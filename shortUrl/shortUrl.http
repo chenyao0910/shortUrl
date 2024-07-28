@@ -1,6 +1,5 @@
-@shortUrl_HostAddress = http://localhost:5136
 
-GET {{shortUrl_HostAddress}}/weatherforecast/
+GET http://localhost:5136/api/Get?s=123
 Accept: application/json
 
 ###

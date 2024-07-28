@@ -1,6 +1,3 @@
-using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using shortUrl.Interfaces;
 using shortUrl.Services;
 
@@ -11,7 +8,6 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
-
 builder.Services.AddTransient<IShortUrlService, ShortUrlService>();
 var app = builder.Build();
 
