@@ -1,4 +1,5 @@
 using shortUrl.Interfaces;
+using shortUrl.Repositories;
 using shortUrl.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,6 +10,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
 builder.Services.AddTransient<IShortUrlService, ShortUrlService>();
+builder.Services.AddTransient<IRepository, MysqlRepository>();
 var app = builder.Build();
 
 app.MapControllers();

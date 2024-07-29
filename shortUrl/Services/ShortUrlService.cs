@@ -6,16 +6,16 @@ namespace shortUrl.Services;
 
 public class ShortUrlService : IShortUrlService
 {
-    private MysqlRepository _repo;
+    private readonly IRepository _repo;
 
-    public ShortUrlService(MysqlRepository repo)
+    public ShortUrlService(IRepository repo)
     {
         _repo = repo;
     }
 
     public string Redirect(string s)
     {
-        _repo.GetUrl(s);
+        _repo.InsertUrl(s);
         return s;
     }
 }

@@ -1,7 +1,9 @@
+using shortUrl.Repositories;
+
 namespace shortUrl.Interfaces;
 
 public interface IRepository
 {
-    public string GetUrl(string key);
-    public void InsertUrl(Uri url);
+    public IEnumerable<ShortUrlDto> GetUrl(string key);
+    public void InsertUrl(string url);
 }
