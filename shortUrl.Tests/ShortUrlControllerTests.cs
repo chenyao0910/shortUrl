@@ -2,6 +2,7 @@ using FluentAssertions;
 using NSubstitute;
 using shortUrl.Controllers;
 using shortUrl.Interfaces;
+using shortUrl.Repositories;
 
 namespace shortUrl.Tests;
 
@@ -23,7 +24,10 @@ public class ShortUrlControllerTests
     [TestCase("test")]
     public void When_Call_Get_ShortUrl_Should_Return_GivenString(string queryString)
     {
-        _shortUrlService.Redirect(queryString).Returns(queryString);
+        _shortUrlService.Redirect(queryString).Returns(new ShortUrlDto
+        {
+            Url = queryString
+        });
 
         var result = _shortUrlController.Get(queryString);
 
@@ -35,6 +39,11 @@ public class ShortUrlControllerTests
     [TestCase("test")]
     public void When_Call_Get_ShortUrlService_Should_Be_Called(string queryStr)
     {
+        _shortUrlService.Redirect(queryStr).Returns(new ShortUrlDto
+        {
+            Url = string.Empty
+        });
+
         _shortUrlController.Get(queryStr);
 
         _shortUrlService.Received(1).Redirect(Arg.Is<string>(s => s == queryStr));

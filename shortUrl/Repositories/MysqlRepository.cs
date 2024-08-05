@@ -1,6 +1,4 @@
-using System.Data.SqlClient;
 using shortUrl.Interfaces;
-using shortUrl.Models;
 using Dapper;
 using MySqlConnector;
 
@@ -14,21 +12,28 @@ public class MysqlRepository : IRepository
     {
         _configuration = configuration;
     }
-    public IEnumerable<ShortUrlDto> GetUrl(string key)
+    public ShortUrlDto GetUrl(string key)
     {
-        using var conn = new MySqlConnection("Server=localhost;User ID=root;Password=1234@qwer;Database=mysql");
-        var shortUrlDto = conn.Query<ShortUrlDto>("SELECT * FROM shortUrl");
-        return shortUrlDto;
+        using var conn = new MySqlConnection("Server=localhost;User ID=root;Password=1234@qwer;Database=mysql;Allow User Variables=true");
+        var dynamicParameters = new DynamicParameters();
+        dynamicParameters.Add("UrlKey", key);
+        var shortUrlDto = conn.Query<ShortUrlDto>("SELECT UrlKey, Url FROM shortUrl WHERE UrlKey = @UrlKey", dynamicParameters);
+        return shortUrlDto.First();
     }
 
-    public void InsertUrl(string url)
+    public void InsertUrl(ShortUrlDto dto)
     {
-        var sql = "INSERT INTO shortUrl (UrlKey, Url) VALUES ('chenyao091', 'chwjewq1231')";
-        using var conn = new MySqlConnection("Server=localhost;User ID=root;Password=1234@qwer;Database=mysql");
-        var row = conn.Execute(sql);
+        using var conn = new MySqlConnection("Server=localhost;User ID=root;Password=1234@qwer;Database=mysql;Allow User Variables=true");
+        var dynamicParameters = new DynamicParameters();
+        dynamicParameters.Add("urlKey", dto.UrlKey);
+        dynamicParameters.Add("url", dto.Url);
+        var sql = "INSERT INTO shortUrl (UrlKey, Url) VALUES (@urlKey, @url)";
+        var row = conn.Execute(sql, dynamicParameters);
         Console.WriteLine(row);
     }
+    
 }
+
 
 public class ShortUrlDto
 {

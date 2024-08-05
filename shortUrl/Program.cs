@@ -1,6 +1,7 @@
 using shortUrl.Interfaces;
 using shortUrl.Repositories;
 using shortUrl.Services;
+using Sqids;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +12,11 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
 builder.Services.AddTransient<IShortUrlService, ShortUrlService>();
 builder.Services.AddTransient<IRepository, MysqlRepository>();
+builder.Services.AddSingleton(new SqidsEncoder<int>(new()
+{
+    Alphabet = "mTHivO7hx3RAbr1f586SwjNnK2lgpcUVuG09BCtekZdJ4DYFPaWoMLQEsXIqyz",
+    MinLength = 6,
+}));
 var app = builder.Build();
 
 app.MapControllers();
