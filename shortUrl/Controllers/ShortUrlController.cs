@@ -23,9 +23,16 @@ public class ShortUrlController
     }
 
     [HttpPost]
-    public string Post(CreateShortUrlRequest createShortUrlRequest)
+    public createShortUrlResponse Post(CreateShortUrlRequest createShortUrlRequest)
     {
-        var redirect = _shortUrlService.Create(createShortUrlRequest);
-        return redirect.Url;
+        var shortUrlModel = _shortUrlService.Create(createShortUrlRequest);
+
+        var createShortUrlResponse = new createShortUrlResponse()
+        {
+            IsSuccess = shortUrlModel.IsSuccess,
+            ShortUrl = $"localhost:5111/{shortUrlModel.UrlKey}"
+        };
+
+        return createShortUrlResponse; 
     }
 }

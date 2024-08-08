@@ -5,5 +5,5 @@ namespace shortUrl.Interfaces;
 public interface IRepository
 {
     public ShortUrlDto GetUrl(string key);
-    public void InsertUrl(ShortUrlDto shortUrlDto);
+    public int InsertUrl(ShortUrlDto shortUrlDto);
 }

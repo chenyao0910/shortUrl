@@ -26,17 +26,20 @@ public class ShortUrlService : IShortUrlService
         return shortUrlDto;
     }
 
-    public ShortUrlDto Create(CreateShortUrlRequest createShortUrlRequest)
+    public ShorUrlModel Create(CreateShortUrlRequest createShortUrlRequest)
     {
         var urlKey = _sqids.Encode(_counter++);
 
-        _repo.InsertUrl(new ShortUrlDto
+        var rowCount = _repo.InsertUrl(new ShortUrlDto
         {
             UrlKey = urlKey,
             Url = createShortUrlRequest.Url
         });
 
-
-        return new ShortUrlDto();
+        return new ShorUrlModel()
+        {
+            IsSuccess = rowCount,
+            UrlKey = rowCount != 0 ? urlKey : string.Empty 
+        };
     }
 }

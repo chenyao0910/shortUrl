@@ -21,15 +21,14 @@ public class MysqlRepository : IRepository
         return shortUrlDto.First();
     }
 
-    public void InsertUrl(ShortUrlDto dto)
+    public int InsertUrl(ShortUrlDto dto)
     {
         using var conn = new MySqlConnection("Server=localhost;User ID=root;Password=1234@qwer;Database=mysql;Allow User Variables=true");
         var dynamicParameters = new DynamicParameters();
         dynamicParameters.Add("urlKey", dto.UrlKey);
         dynamicParameters.Add("url", dto.Url);
-        var sql = "INSERT INTO shortUrl (UrlKey, Url) VALUES (@urlKey, @url)";
-        var row = conn.Execute(sql, dynamicParameters);
-        Console.WriteLine(row);
+
+        return conn.Execute("INSERT INTO shortUrl (UrlKey, Url) VALUES (@urlKey, @url)", dynamicParameters);
     }
     
 }
